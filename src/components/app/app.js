@@ -1,11 +1,14 @@
 import React from 'react';
 import ErrorIndicator from '../error-indicator';
-import Spinner from '../spinner/';
+import { withBookstoreService } from '../hoc';
 
-export const App = () => {
+const App = ({ bookstoreService }) => {
+    console.log(bookstoreService.getBooks());
     return (
         <div>
-            <ErrorIndicator text='WOW!!!'/>
+            App
         </div>
     )
 }
+
+export default withBookstoreService()(App);
