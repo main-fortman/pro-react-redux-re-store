@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import BookListItem from '../book-list-item';
+import { connect } from 'react-redux';
 
 const BookList = ({ books }) => {
     
@@ -27,4 +28,8 @@ BookList.propTypes = {
     books: PropTypes.array
 }
 
-export default BookList;
+const mapStateToProps = ({books}) => {
+    return { books };
+}
+
+export default connect(mapStateToProps)(BookList);
