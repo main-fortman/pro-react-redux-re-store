@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import ErrorIndicator from '../error-indicator';
 import { withBookstoreService } from '../hoc';
 import { CartPage, HomePage } from '../pages';
 

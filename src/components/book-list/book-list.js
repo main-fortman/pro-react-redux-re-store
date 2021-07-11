@@ -1,12 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import BookListItem from '../book-list-item';
 import { connect } from 'react-redux';
+import BookstoreServiceContext from '../bookstore-service-context';
+import { bindActionCreators } from 'redux';
+import {booksLoaded} from '../../actions';
 
-const BookList = ({ books }) => {
+const BookList = ({ books, booksLoaded }) => {
     
-    useEffect(() => {
+    const service = useContext(BookstoreServiceContext);
 
+    useEffect(() => {
+        booksLoaded(service.getBooks());
     }, []);
 
     return (
@@ -32,4 +37,8 @@ const mapStateToProps = ({books}) => {
     return { books };
 }
 
-export default connect(mapStateToProps)(BookList);
+const mapDispToProps = {
+    booksLoaded
+}
+
+export default connect(mapStateToProps, mapDispToProps)(BookList);
