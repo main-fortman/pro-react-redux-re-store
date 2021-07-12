@@ -1,18 +1,19 @@
 import PropTypes from 'prop-types';
 import React, { useContext, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { booksLoaded } from '../../actions';
+import { booksLoaded, booksRequested } from '../../actions';
 import BookListItem from '../book-list-item';
 import BookstoreServiceContext from '../bookstore-service-context';
 import Spinner from '../spinner';
 
 import './styles.css';
 
-const BookList = ({ books, loading, booksLoaded }) => {
+const BookList = ({ books, loading, booksRequested, booksLoaded }) => {
     
     const service = useContext(BookstoreServiceContext);
 
     useEffect(() => {
+        booksRequested();
         service.getBooks()
             .then(data => booksLoaded(data));
     }, []);
@@ -45,7 +46,8 @@ const mapStateToProps = ({books, loading}) => {
 }
 
 const mapDispToProps = {
-    booksLoaded
+    booksLoaded,
+    booksRequested
 }
 
 export default connect(mapStateToProps, mapDispToProps)(BookList);
