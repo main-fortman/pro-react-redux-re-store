@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import BookListItem from '../book-list-item';
+import React, { useContext, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { booksLoaded } from '../../actions';
+import BookListItem from '../book-list-item';
 import BookstoreServiceContext from '../bookstore-service-context';
-import { bindActionCreators } from 'redux';
-import {booksLoaded} from '../../actions';
+
+import './styles.css';
 
 const BookList = ({ books, booksLoaded }) => {
     
@@ -15,7 +16,7 @@ const BookList = ({ books, booksLoaded }) => {
     }, []);
 
     return (
-        <ul>
+        <ul className="book-list">
             {
                 books.map((book) => {
                     return (
