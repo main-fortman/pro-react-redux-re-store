@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useContext, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { booksLoaded, booksRequested, booksError } from '../../actions';
+import { fetchBooks } from '../../actions';
 import BookListItem from '../book-list-item';
 import BookstoreServiceContext from '../bookstore-service-context';
 import Spinner from '../spinner';
@@ -50,12 +50,7 @@ const mapStateToProps = ({books, loading, error}) => {
 
 const mapDispToProps = (disp) => {
     return {
-        fetchBooks: (service) => {
-            disp(booksRequested());
-            service.getBooks()
-                .then(data => disp(booksLoaded(data)))
-                .catch(error => disp(booksError(error)));
-        }
+        fetchBooks: fetchBooks(disp)
     }
 }
 
