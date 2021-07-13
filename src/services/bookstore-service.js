@@ -18,9 +18,12 @@ export default class BookstoreService {
     ]
 
     getBooks() {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
+            console.log('Loading books...');
             setTimeout(() => {
+                console.log('...complete.');
                 resolve(this.data);
+                // reject(new Error('Load failure!'));
             }, 700);
         });
     }

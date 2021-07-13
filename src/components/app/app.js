@@ -5,7 +5,6 @@ import { CartPage, HomePage } from '../pages';
 import ShopHeader from '../shop-header';
 
 const App = ({ bookstoreService }) => {
-    console.log(bookstoreService.getBooks());
     return (
         <main role="main" className='container'>
             <ShopHeader numItems={5} total={210}/>
