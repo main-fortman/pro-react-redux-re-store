@@ -9,7 +9,7 @@ import ErrorIndicator from '../error-indicator';
 
 import './styles.css';
 
-const BookList = ({ books, loading, error, fetchBooks }) => {
+const BookListContainer = ({ books, loading, error, fetchBooks }) => {
     
     const service = useContext(BookstoreServiceContext);
 
@@ -25,6 +25,14 @@ const BookList = ({ books, loading, error, fetchBooks }) => {
         return <ErrorIndicator/>
     }
 
+    return <BooksList books={books}/>
+}
+
+BookListContainer.propTypes = {
+    books: PropTypes.array
+}
+
+const BooksList = ({books}) => {
     return (
         <ul className="book-list">
             {
@@ -40,10 +48,6 @@ const BookList = ({ books, loading, error, fetchBooks }) => {
     )
 }
 
-BookList.propTypes = {
-    books: PropTypes.array
-}
-
 const mapStateToProps = ({books, loading, error}) => {
     return { books, loading, error };
 }
@@ -54,4 +58,4 @@ const mapDispToProps = (disp) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispToProps)(BookList);
+export default connect(mapStateToProps, mapDispToProps)(BookListContainer);
