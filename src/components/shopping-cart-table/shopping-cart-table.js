@@ -1,7 +1,9 @@
 import React from 'react';
 import './styles.css';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-const ShoppingCartTable = () => {
+const ShoppingCartTable = ({items, total, onInc, onDec, onDelete}) => {
   return (
     <div className="shopping-cart-table">
       <h2>Your Order</h2>
@@ -17,31 +19,72 @@ const ShoppingCartTable = () => {
         </thead>
 
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Site Reliability Engineering</td>
-            <td>2</td>
-            <td>$40</td>
-            <td>
-              <button className="btn btn-outline-danger btn-sm float-right">
-                <i className="fa fa-trash-o" />
-              </button>
-              <button className="btn btn-outline-success btn-sm float-right">
-                <i className="fa fa-plus-circle" />
-              </button>
-              <button className="btn btn-outline-warning btn-sm float-right">
-                <i className="fa fa-minus-circle" />
-              </button>
-            </td>
-          </tr>
+
+          {
+            items.map((item, index) => {
+              const {id, name, count, total} = item;
+              return (
+                <tr key={id}>
+                  <td>{index + 1}</td>
+                  <td>{name}</td>
+                  <td>{count}</td>
+                  <td>{total}</td>
+                  <td>
+                    <button
+                      className="btn btn-outline-danger btn-sm float-right"
+                      onClick={() => onDelete(id)}
+                    >
+                      <i className="fa fa-trash-o" />
+                    </button>
+                    <button
+                      className="btn btn-outline-success btn-sm float-right"
+                      onClick={() => onInc(id)}
+                    >
+                      <i className="fa fa-plus-circle" />
+                    </button>
+                    <button
+                      className="btn btn-outline-warning btn-sm float-right"
+                      onClick={() => onDec(id)}
+                    >
+                      <i className="fa fa-minus-circle" />
+                    </button>
+                  </td>
+                </tr>
+              )
+            })
+          }
+
         </tbody>
       </table>
 
       <div className="total">
-        Total: $201
+        Total: {total}
       </div>
     </div>
   );
 };
 
-export default ShoppingCartTable;
+ShoppingCartTable.propTypes = {
+  items: PropTypes.array,
+  total: PropTypes.number,
+  onInc: PropTypes.func,
+  onDec: PropTypes.func,
+  onDelete: PropTypes.func,
+}
+
+const mapsStateToProps = ({cartItems, orderTotal}) => {
+  return {
+    items: cartItems,
+    total: orderTotal
+  }
+}
+
+const mapDispatchToProps = () => {
+  return {
+    onInc: (id) => console.log('inc', id),
+    onDec: (id) => console.log('dec', id),
+    onDelete: (id) => console.log('delete', id),
+  }
+}
+
+export default connect(mapsStateToProps, mapDispatchToProps)(ShoppingCartTable);
