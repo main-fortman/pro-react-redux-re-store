@@ -36,10 +36,20 @@ const reducer = (state = initState, action) => {
             const itemIndex = state.cartItems.findIndex((item) => item.id === bookId);
             const item = state.cartItems[itemIndex];
              
-            const newItem = updateCartItem(book, item);
+            const newItem = addBookToCartItem(book, item);
             return {
                 ...state,
                 cartItems: updateCartItems(state.cartItems, newItem, itemIndex)
+            }
+        case 'BOOK_REMOVED_FROM_CART':
+            return {
+                ...state,
+                cartItems: removeBook(state.cartItems, action.payload)
+            }
+        case 'CART_ITEM_REMOVED':
+            return {
+                ...state,
+                cartItems: removeCartItem(state.cartItems, action.payload)
             }
         default:
             return state;
@@ -50,11 +60,6 @@ const updateCartItems = (cartItems, item, index) => {
     if (index === -1) {
         return [...cartItems, item]
     }
-    
-    const arr = [...cartItems];
-    arr.splice(index, 1, item);
-    return arr;
-
     return [
         ...cartItems.slice(0, index),
         item,
@@ -62,7 +67,7 @@ const updateCartItems = (cartItems, item, index) => {
     ]
 }
 
-const updateCartItem = (book, item = {}) => {
+const addBookToCartItem = (book, item = {}) => {
     const { id = book.id, count = 0, title = book.title, total = 0 } = item;
     return {
         id,
@@ -72,5 +77,22 @@ const updateCartItem = (book, item = {}) => {
     };
 }
 
+const removeBook = (cartItems, bookId) => {
+    const item = cartItems.find(item => item.id === bookId);
+    if (item.count > 1) {
+        const itemIndex = cartItems.findIndex((item) => item.id === bookId);
+        const newItem = {
+            ...item,
+            count: item.count - 1,
+            total: item.total - (item.total / item.count)
+        };
+        return updateCartItems(cartItems, newItem, itemIndex);
+    }
+    return removeCartItem(cartItems, bookId);
+}
+
+const removeCartItem = (cartItems, bookId) => {
+    return cartItems.filter(item => item.id !== bookId);
+}
 
 export default reducer;

@@ -2,6 +2,7 @@ import React from 'react';
 import './styles.css';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bookAddedToCart, bookRemovedFromCart, cartItemRemoved } from '../../actions';
 
 const ShoppingCartTable = ({items, total, onInc, onDec, onDelete}) => {
   return (
@@ -79,12 +80,11 @@ const mapsStateToProps = ({cartItems, orderTotal}) => {
   }
 }
 
-const mapDispatchToProps = () => {
-  return {
-    onInc: (id) => console.log('inc', id),
-    onDec: (id) => console.log('dec', id),
-    onDelete: (id) => console.log('delete', id),
-  }
+const mapDispatchToProps =  {
+    onInc: bookAddedToCart,
+    onDec: bookRemovedFromCart,
+    onDelete: cartItemRemoved,
 }
+
 
 export default connect(mapsStateToProps, mapDispatchToProps)(ShoppingCartTable);
