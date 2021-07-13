@@ -9,16 +9,13 @@ import ErrorIndicator from '../error-indicator';
 
 import './styles.css';
 
-const BookList = ({ books, loading, error, booksRequested, booksLoaded, booksError }) => {
+const BookList = ({ books, loading, error, fetchBooks }) => {
     
     const service = useContext(BookstoreServiceContext);
 
     useEffect(() => {
-        booksRequested();
-        service.getBooks()
-            .then(data => booksLoaded(data))
-            .catch(error => booksError(error));
-    }, []);
+        fetchBooks(service);
+    }, [service, fetchBooks]);
 
     if (loading) {
         return <Spinner/>
@@ -51,10 +48,15 @@ const mapStateToProps = ({books, loading, error}) => {
     return { books, loading, error };
 }
 
-const mapDispToProps = {
-    booksLoaded,
-    booksRequested,
-    booksError
+const mapDispToProps = (disp) => {
+    return {
+        fetchBooks: (service) => {
+            disp(booksRequested());
+            service.getBooks()
+                .then(data => disp(booksLoaded(data)))
+                .catch(error => disp(booksError(error)));
+        }
+    }
 }
 
 export default connect(mapStateToProps, mapDispToProps)(BookList);
