@@ -25,3 +25,10 @@ export const fetchBooks = (disp) => (service) => {
         .then(data => disp(booksLoaded(data)))
         .catch(error => disp(booksError(error)));
 }
+
+export const bookAddedToCart = (bookId) => {
+    return {
+        type: 'BOOK_ADDED_TO_CART',
+        payload: bookId
+    }
+}

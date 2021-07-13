@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useContext, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchBooks } from '../../actions';
+import { fetchBooks, bookAddedToCart } from '../../actions';
 import BookListItem from '../book-list-item';
 import BookstoreServiceContext from '../bookstore-service-context';
 import Spinner from '../spinner';
@@ -9,7 +9,7 @@ import ErrorIndicator from '../error-indicator';
 
 import './styles.css';
 
-const BookListContainer = ({ books, loading, error, fetchBooks }) => {
+const BookListContainer = ({ books, loading, error, fetchBooks, onAddedToCart }) => {
     
     const service = useContext(BookstoreServiceContext);
 
@@ -25,21 +25,24 @@ const BookListContainer = ({ books, loading, error, fetchBooks }) => {
         return <ErrorIndicator/>
     }
 
-    return <BooksList books={books}/>
+    return <BooksList books={books} onAddedToCart={onAddedToCart}/>
 }
 
 BookListContainer.propTypes = {
     books: PropTypes.array
 }
 
-const BooksList = ({books}) => {
+const BooksList = ({books, onAddedToCart}) => {
     return (
         <ul className="book-list">
             {
                 books.map((book) => {
                     return (
                         <li key={book.id}>
-                            <BookListItem book={book}/>
+                            <BookListItem
+                                book={book}
+                                onAddedToCart={() => onAddedToCart(book.id)}
+                                />
                         </li>
                     )
                 })
@@ -54,7 +57,8 @@ const mapStateToProps = ({books, loading, error}) => {
 
 const mapDispToProps = (disp) => {
     return {
-        fetchBooks: fetchBooks(disp)
+        fetchBooks: fetchBooks(disp),
+        onAddedToCart: (id) => disp(bookAddedToCart(id))
     }
 }
 
