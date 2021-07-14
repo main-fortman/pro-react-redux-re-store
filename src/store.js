@@ -1,6 +1,11 @@
-import { createStore } from "redux";
+import { applyMiddleware, createStore } from "redux";
 import reducer from "./reducers";
 
-const store = createStore(reducer);
+const logDispatch = () => (disp) => (action) => {
+    console.log("Dispatch action:", action.type);
+    return disp(action);
+}
+
+const store = createStore(reducer, applyMiddleware(logDispatch));
 
 export default store;

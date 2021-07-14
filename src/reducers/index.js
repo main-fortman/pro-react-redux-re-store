@@ -7,7 +7,6 @@ const initState = {
 }
 
 const reducer = (state = initState, action) => {
-    console.log("reducer type", action.type);
     switch (action.type) {
         case 'FETCH_BOOKS_REQUEST':
             return {
